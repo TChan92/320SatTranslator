@@ -7,7 +7,7 @@ global file_header
 
 
 def main():
-    file = open("SudokuPuzzles/1.txt", 'r')
+    file = open("SudokuPuzzles/sudoku5.txt", 'r')
 
     puzzle = []
     empty_count = 0
@@ -23,23 +23,29 @@ def main():
         line = []
         for j in xrange(9):
             c = file.read(1)
+            if c == '\r' or c == '\n':
+                continue
             line.append(c)
-            if c == '0':
+            if c == '0' or c == '.':
                 empty_count += 1
             else:
-                write_var(i, j, int(c))
+                write_var(i, j, int(c), offsetk=0)
                 end_line()
         puzzle.append(line)
 
-    every_cell_has_number()
-
+    print "unary constraints: " + str(file_clauses.count('\n'))
+    every_cell_has_unique()
+    print "nineary constraints: " + str(file_clauses.count('\n'))
+    every_cell_has_single()
+    print "single constraints: " + str(file_clauses.count('\n'))
     row_uniqueness()
-
+    print "row constraints: " + str(file_clauses.count('\n'))
     column_uniqueness()
+    print "column constraints: " + str(file_clauses.count('\n'))
+
 
     grid_uniqueness()
 
-    file_header += "c Sudoku number 1\n"
     file_header += "p cnf 729 %s\n" % clauses
 
 
@@ -50,7 +56,7 @@ def end_line():
     clauses += 1
 
 
-def every_cell_has_number():
+def every_cell_has_unique():
     for i in xrange(9):
         for j in xrange(9):
             for k in xrange(9):
@@ -58,10 +64,10 @@ def every_cell_has_number():
             end_line()
 
 
-def row_uniqueness():
+def every_cell_has_single():
     for i in xrange(9):
         for j in xrange(9):
-            for k in xrange(8):
+            for k in xrange(9):
                 l = k + 1
                 while l < 9:
                     write_var(i, j, k, neg=1)
@@ -69,15 +75,26 @@ def row_uniqueness():
                     end_line()
                     l += 1
 
+def row_uniqueness():
+    for i in xrange(9):
+        for k in xrange(9):
+            for j in xrange(8):
+                l = j + 1
+                while l < 9:
+                    write_var(i, j, k, neg=1)
+                    write_var(i, l, k, neg=1)
+                    end_line()
+                    l += 1
+
 
 def column_uniqueness():
-    for i in xrange(9):
-        for j in xrange(9):
-            for k in range(8):
-                l = k + 1
+    for j in xrange(9):
+        for k in xrange(9):
+            for i in range(8):
+                l = i + 1
                 while l < 9:
-                    write_var(j, i, k, neg=1)
-                    write_var(j, i, l, neg=1)
+                    write_var(i, j, k, neg=1)
+                    write_var(l, j, k, neg=1)
                     end_line()
                     l += 1
 
@@ -101,7 +118,7 @@ def grid_uniqueness():
             for j in xrange(3):
                 for x in xrange(3):
                     for y in xrange(3):
-                        k = y + 1
+                        k = x + 1
                         while k < 3:
                             for l in xrange(3):
                                 write_var(3 * i + x, 3 * j + y, z, neg=1)
@@ -110,11 +127,15 @@ def grid_uniqueness():
                             k += 1
 
 
-def write_var(i, j, k, neg=0):
+def write_var(i, j, k, neg=0, offsetk=1):
     global file_clauses
     if neg == 1:
         file_clauses += '-'
-    file_clauses += str(i * 81 + j * 9 + (k + 1)) + " "
+    if offsetk == 1:
+        file_clauses += str(i * 81 + j * 9 + (k + 1)) + " "
+    else:
+        file_clauses += str(i * 81 + j * 9 + k) + " "
+
 
 
 if __name__ == "__main__":

@@ -1,1 +1,1 @@
-SATSOLVER CSC320 By Moad Ben-Suleiman
+SATSOLVER CSC320 By Moad Ben-Suleiman (V00807282), 

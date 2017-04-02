@@ -1,1 +1,1 @@
-SATSOLVER CSC320 By Moad Ben-Suleiman (V00807282), 
+SATSOLVER CSC320 By Tim Chan (V00803066), Moad Ben-Suleiman (V00807282),

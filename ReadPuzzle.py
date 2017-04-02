@@ -1,5 +1,3 @@
-import re
-
 puzzles_file = open("50Puzzles.txt", 'r')
 
 for i in xrange(1,51):

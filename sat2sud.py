@@ -1,6 +1,7 @@
 
 def main():
-    file = open("CNF_Files/1.out", 'r')
+    var = raw_input("Please enter something: ")
+    file = open(var, 'r')
 
     numList = []
 
@@ -19,9 +20,12 @@ def main():
             if newLine%9 == 0:
                 numList.append('\n')
 
-    print(numList)
 
-    output = open("1_solution.txt", 'w')
+
+    path = var.split('/')
+    var = path[len(path)-1]
+    var = var[:len(var)-4]
+    output = open(var+"_solution.txt", 'w')
     for i in numList:
         output.write(str(i))
 

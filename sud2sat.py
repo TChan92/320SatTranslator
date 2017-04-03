@@ -134,7 +134,7 @@ if __name__ == "__main__":
 
     inputfile = sys.argv[1]
     global output
-    output = open(sys.argv[2], 'w')
+    output = open(sys.argv[2], 'w+')
 
     start = time.time()
 

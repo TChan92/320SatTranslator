@@ -1,6 +1,7 @@
+import sys
 
 def main():
-    var = raw_input("Please enter something: ")
+    var = sys.argv[1]
     file = open(var, 'r')
 
     numList = []
@@ -22,10 +23,7 @@ def main():
 
 
 
-    path = var.split('/')
-    var = path[len(path)-1]
-    var = var[:len(var)-4]
-    output = open(var+"_solution.txt", 'w')
+    output = open(sys.argv[2], 'w+')
     for i in numList:
         output.write(str(i))
 

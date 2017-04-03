@@ -2,22 +2,22 @@ import time
 
 import sys
 
-global output
-global clauses
-global file_clauses
-global file_header
+global output_file
+global num_of_clauses
+global clause_buffer
+global header_buffer
 
 
 def translate_to_sat(inputfile):
     file = open(inputfile, 'r')
 
-    global clauses
-    clauses = 0
+    global num_of_clauses
+    num_of_clauses = 0
 
-    global file_clauses
-    file_clauses = ""
-    global file_header
-    file_header = ""
+    global clause_buffer
+    clause_buffer = ""
+    global header_buffer
+    header_buffer = ""
 
     # Remove new lines in the file
     file = file.read().replace("\r", "").replace("\n", "")
@@ -42,14 +42,14 @@ def translate_to_sat(inputfile):
     grid_uniqueness()
 
     # This gets printed first
-    file_header += "p cnf 729 %s\n" % clauses
+    header_buffer += "p cnf 729 %s\n" % num_of_clauses
 
 
 def end_line():
-    global file_clauses
-    file_clauses += "0\n"
-    global clauses
-    clauses += 1
+    global clause_buffer
+    clause_buffer += "0\n"
+    global num_of_clauses
+    num_of_clauses += 1
 
 
 # Each cell can be 1-9
@@ -118,13 +118,13 @@ def grid_uniqueness():
 
 # Adds a variable to the file buffer, can have negative values. Also has optional offset for k
 def write_var(i, j, k, neg=0, offsetk=1):
-    global file_clauses
+    global clause_buffer
     if neg == 1:
-        file_clauses += '-'
+        clause_buffer += '-'
     if offsetk == 1:
-        file_clauses += str(i * 81 + j * 9 + (k + 1)) + " "
+        clause_buffer += str(i * 81 + j * 9 + (k + 1)) + " "
     else:
-        file_clauses += str(i * 81 + j * 9 + k) + " "
+        clause_buffer += str(i * 81 + j * 9 + k) + " "
 
 
 if __name__ == "__main__":
@@ -133,18 +133,18 @@ if __name__ == "__main__":
         exit()
 
     inputfile = sys.argv[1]
-    global output
-    output = open(sys.argv[2], 'w+')
+    global output_file
+    output_file = open(sys.argv[2], 'w+')
 
     start = time.time()
 
     translate_to_sat(inputfile)
 
     # Print to file
-    output.write(file_header)
-    output.write(file_clauses)
+    output_file.write(header_buffer)
+    output_file.write(clause_buffer)
 
     # Print log
     print "Running time: " + str(time.time() - start)
-    global clauses
-    print str(clauses) + " clauses added"
+    global num_of_clauses
+    print str(num_of_clauses) + " clauses added"

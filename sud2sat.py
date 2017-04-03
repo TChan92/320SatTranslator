@@ -34,7 +34,6 @@ def main():
         puzzle.append(line)
 
     every_cell_has_unique()
-    every_cell_has_single()
     row_uniqueness()
     column_uniqueness()
     grid_uniqueness()
@@ -56,17 +55,6 @@ def every_cell_has_unique():
                 write_var(i, j, k)
             end_line()
 
-
-def every_cell_has_single():
-    for i in xrange(9):
-        for j in xrange(9):
-            for k in xrange(9):
-                l = k + 1
-                while l < 9:
-                    write_var(i, j, k, neg=1)
-                    write_var(i, j, l, neg=1)
-                    end_line()
-                    l += 1
 
 def row_uniqueness():
     for i in xrange(9):
@@ -130,7 +118,6 @@ def write_var(i, j, k, neg=0, offsetk=1):
         file_clauses += str(i * 81 + j * 9 + k) + " "
 
 
-
 if __name__ == "__main__":
     start = time.time()
     main()
@@ -138,4 +125,4 @@ if __name__ == "__main__":
     output.write(file_clauses)
     print "Running time: " + str(time.time() - start)
     global clauses
-    print clauses
+    print str(clauses) + " clauses added"

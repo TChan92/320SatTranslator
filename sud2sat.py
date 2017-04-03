@@ -7,10 +7,9 @@ global file_header
 
 
 def main():
-    file = open("SudokuPuzzles/sudoku5.txt", 'r')
+    file = open("SudokuPuzzles/1.txt", 'r')
 
     puzzle = []
-    empty_count = 0
     global clauses
     clauses = 0
 
@@ -19,31 +18,25 @@ def main():
     global file_header
     file_header = ""
 
+    # Remove new lines in the file
+    file = file.read().replace("\r", "").replace("\n", "")
+
+    file_index = 0
     for i in xrange(9):
         line = []
         for j in xrange(9):
-            c = file.read(1)
-            if c == '\r' or c == '\n':
-                continue
+            c = file[file_index:file_index+1]
             line.append(c)
-            if c == '0' or c == '.':
-                empty_count += 1
-            else:
+            if not (c == '0' or c == '.' or c == '?' or c == '*'):
                 write_var(i, j, int(c), offsetk=0)
                 end_line()
+            file_index += 1
         puzzle.append(line)
 
-    print "unary constraints: " + str(file_clauses.count('\n'))
     every_cell_has_unique()
-    print "nineary constraints: " + str(file_clauses.count('\n'))
     every_cell_has_single()
-    print "single constraints: " + str(file_clauses.count('\n'))
     row_uniqueness()
-    print "row constraints: " + str(file_clauses.count('\n'))
     column_uniqueness()
-    print "column constraints: " + str(file_clauses.count('\n'))
-
-
     grid_uniqueness()
 
     file_header += "p cnf 729 %s\n" % clauses

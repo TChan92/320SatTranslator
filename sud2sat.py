@@ -8,10 +8,9 @@ global file_clauses
 global file_header
 
 
-def translate_to_sat(inputfile, ):
+def translate_to_sat(inputfile):
     file = open(inputfile, 'r')
 
-    puzzle = []
     global clauses
     clauses = 0
 
@@ -27,19 +26,22 @@ def translate_to_sat(inputfile, ):
     for i in xrange(9):
         line = []
         for j in xrange(9):
+            # Read character by character
             c = file[file_index:file_index+1]
             line.append(c)
+            # For given numbers, make a rule with them
             if not (c == '0' or c == '.' or c == '?' or c == '*'):
                 write_var(i, j, int(c), offsetk=0)
                 end_line()
             file_index += 1
-        puzzle.append(line)
 
+    # Add the minimum conditions one by one
     every_cell_has_unique()
     row_uniqueness()
     column_uniqueness()
     grid_uniqueness()
 
+    # This gets printed first
     file_header += "p cnf 729 %s\n" % clauses
 
 
@@ -50,6 +52,7 @@ def end_line():
     clauses += 1
 
 
+# Each cell can be 1-9
 def every_cell_has_unique():
     for i in xrange(9):
         for j in xrange(9):
@@ -58,10 +61,12 @@ def every_cell_has_unique():
             end_line()
 
 
+# Each row must have only one of each number
 def row_uniqueness():
     for i in xrange(9):
         for k in xrange(9):
             for j in xrange(8):
+                # Make rules for a number and the ones after it
                 l = j + 1
                 while l < 9:
                     write_var(i, j, k, neg=1)
@@ -70,6 +75,7 @@ def row_uniqueness():
                     l += 1
 
 
+# Each column must have only one of each number
 def column_uniqueness():
     for j in xrange(9):
         for k in xrange(9):
@@ -110,6 +116,7 @@ def grid_uniqueness():
                             k += 1
 
 
+# Adds a variable to the file buffer, can have negative values. Also has optional offset for k
 def write_var(i, j, k, neg=0, offsetk=1):
     global file_clauses
     if neg == 1:
@@ -128,9 +135,12 @@ if __name__ == "__main__":
     inputfile = sys.argv[1]
     global output
     output = open(sys.argv[2], 'w')
+
     start = time.time()
+
     translate_to_sat(inputfile)
 
+    # Print to file
     output.write(file_header)
     output.write(file_clauses)
 

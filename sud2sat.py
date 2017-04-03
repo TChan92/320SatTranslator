@@ -1,13 +1,15 @@
 import time
 
-output = open("CNF_Files/1.in", 'w')
+import sys
+
+global output
 global clauses
 global file_clauses
 global file_header
 
 
-def main():
-    file = open("SudokuPuzzles/1.txt", 'r')
+def translate_to_sat(inputfile, ):
+    file = open(inputfile, 'r')
 
     puzzle = []
     global clauses
@@ -119,10 +121,20 @@ def write_var(i, j, k, neg=0, offsetk=1):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("ERROR: TOO FEW ARGUMENTS: Please run with \"python sud2sat.py <inputfile> <outputfile>\"")
+        exit()
+
+    inputfile = sys.argv[1]
+    global output
+    output = open(sys.argv[2], 'w')
     start = time.time()
-    main()
+    translate_to_sat(inputfile)
+
     output.write(file_header)
     output.write(file_clauses)
+
+    # Print log
     print "Running time: " + str(time.time() - start)
     global clauses
     print str(clauses) + " clauses added"

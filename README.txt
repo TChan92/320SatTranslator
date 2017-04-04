@@ -6,10 +6,8 @@ Included files:
 Documentation.txt   Contains instructions on how to use files
 sud2sat.py          Changes file to DIMANCS format for use with a sat solver
 sat2sud.py          Changes file from SAT output to readable format
-testing.sh          Runs through all the puzzles in SudokuPuzzles puts the
-output into CNF_Out
-testingHard.sh      Runs through all the hard puzzles in HardPuzzles and puts
-the output into CNF_Hard_Files
+testing.sh          Runs through all the puzzles in SudokuPuzzles puts the output into CNF_Out
+testingHard.sh      Runs through all the hard puzzles in HardPuzzles and puts the output into CNF_Hard_Files
 
 Bonus Tasks:
 Hard Puzzles are solvable using this program, they were parsed into individual files

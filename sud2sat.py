@@ -40,12 +40,12 @@ def translate_to_sat(inputfile):
     row_uniqueness()
     column_uniqueness()
     grid_uniqueness()
-    
+
     # Extended conditions
     one_number_per_entry()
     once_per_row()
     once_per_col()
-    one_per_grid()
+    once_per_grid()
 
     # This gets printed first
     header_buffer += "p cnf 729 %s\n" % num_of_clauses
@@ -94,7 +94,6 @@ def column_uniqueness():
                     l += 1
 
 
-# This might need additional debugging later since some of these start at 0 and some don't
 def grid_uniqueness():
     for z in xrange(9):
         for i in xrange(3):
@@ -121,36 +120,47 @@ def grid_uniqueness():
                                 end_line()
                             k += 1
 
-#brian's additions
+
+# brian's additions
 def one_number_per_entry():
-	for x in range(9):
-		for y in range(9):
-			for z in range(8):
-				i = z + 1
-				while i < 9:
-					write_var(x, y, z, neg=1)
-					write_var(x, y, i, neg=1)
+    for x in range(9):
+        for y in range(9):
+            for z in range(8):
+                i = z + 1
+                while i < 9:
+                    write_var(x, y, z, neg=1)
+                    write_var(x, y, i, neg=1)
+                    end_line()
+                    i += 1
+
+
 def once_per_row():
-	for y in range(9):
-		for z in range(9):
-			for x in range(9):
-				#sxyz write do we only use neg flag if negation takes place?
-				write_var(x, y, z)
-				
+    for y in range(9):
+        for z in range(9):
+            for x in range(9):
+                #sxyz write do we only use neg flag if negation takes place?
+                write_var(x, y, z)
+            end_line()
+
+
 def once_per_col():
-	for x in range(9):
-		for z in range(9):
-			for y in range(9):
-				#check
-				write_var(x, y, z)
-				
-def one_per_grid():
-	for z in range(9):
-		for i in range(2):
-			for j in range(2):
-				for x in range(3):
-					for y in range(3):
-						write_var(3 * i + x, 3 * j + x, z) 
+    for x in range(9):
+        for z in range(9):
+            for y in range(9):
+                #check
+                write_var(x, y, z)
+            end_line()
+
+
+def once_per_grid():
+    for z in xrange(9):
+        for i in xrange(3):
+            for j in xrange(3):
+                for x in xrange(3):
+                    for y in xrange(3):
+                        write_var(3 * i + x, 3 * j + y, z)
+                end_line()
+
 
 # Adds a variable to the file buffer, can have negative values. Also has optional offset for k
 def write_var(i, j, k, neg=0, offsetk=1):

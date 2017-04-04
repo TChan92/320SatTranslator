@@ -42,10 +42,10 @@ def translate_to_sat(inputfile):
     grid_uniqueness()
 
     # Extended conditions
-    one_number_per_entry()
-    once_per_row()
-    once_per_col()
-    once_per_grid()
+    # one_number_per_entry()
+    # once_per_row()
+    # once_per_col()
+    # once_per_grid()
 
     # This gets printed first
     header_buffer += "p cnf 729 %s\n" % num_of_clauses

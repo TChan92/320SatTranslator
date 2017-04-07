@@ -5,17 +5,19 @@ Tim Chan (V00803066), Moad Ben-Suleiman (V00807282), Brian McCormack (V00818130)
 ## Run Instructions
 sud2sat.py takes a sudoku file and turns it into a DIMACs format file for use with a SAT solver, specifically minisat.
 It can be run with the command 
-```{r, engine='bash', count_lines}
+```
 python sud2sat.py <inputfile> <outputfile>
 ```
 where inputfile is a sudoku file and outputfile is the output file for the sud2sat
 
 <br>
 sat2sud.py takes a minisat output file and translates it into a readable sudoku file. It can be run with the command 
-```{r, engine='bash', count_lines}
+
+```
 python sat2sud.py <inputfile> <outputfile>
 ```
-where <inputfile> is the output of minisat and <outputfile> is the output for sat2sud
+
+where inputfile is the output of minisat and outputfile is the output for sat2sud
 
 <br>
 testing.sh can be run to help test. It run the 50 files inside SudokuPuzzles and give the solved puzzles inside CNF_Out
